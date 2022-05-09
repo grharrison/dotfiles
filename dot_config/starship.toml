@@ -1,0 +1,191 @@
+# ~/.config/starship.toml
+
+# Inserts a blank line between shell prompts
+add_newline = true
+
+# Change command timeout from 500 to 1200 ms
+command_timeout = 1200
+
+# Change the default prompt format
+#format = """\
+#[╭╴](238)$env_var\
+#$all[╰─](238)$character"""
+
+format = """\
+$sudo\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$git_commit\
+$line_break\
+$character\
+$shell
+"""
+
+
+#
+# A continuation prompt that displays two filled in arrows
+continuation_prompt = ">> "
+# 
+# Change the default prompt characters
+[character]
+success_symbol = "[✓](green)"
+error_symbol = "[✗](bright red)"
+
+
+# Shows an icon that should be included by zshrc script based on the distribution or os
+[env_var.STARSHIP_DISTRO]
+format = '[$env_value]($style) '
+#variable = "STARSHIP_DISTRO"
+disabled = false
+style = "cyan bold"
+
+#Show the current shell
+[shell]
+bash_indicator = " "
+zsh_indicator = " "
+powershell_indicator = "_ "
+unknown_indicator = " "
+style  = "cyan bold"
+#style = "bg:#575A6B fg:#61C2A2"
+disabled = false
+
+[sudo]
+style = "purple bold"
+symbol = "+"
+disabled = false
+allow_windows = false
+format = "[$symbol]($style)"
+# Shows the username
+[username]
+style_user = "fg:#61C2A2"
+style_root = "red bold"
+format = "[$user]($style)"
+disabled = false
+show_always = true
+
+#Show the hostname 
+[hostname]
+ssh_only = false
+format = "[@](248)[$hostname]($style) "
+#trim_at = ".companyname.com"
+disabled = false
+style = "fg:#FEDD00"
+
+[container]
+symbol = " "
+format = "[ ][$symbol \\[$name\\]]($style) "
+style = "blue"
+
+[directory]
+style = "(bg:#135DD8)"
+truncation_length = 20
+truncate_to_repo = false
+truncation_symbol = "…/"
+home_symbol = " ~"
+read_only_style = "197"
+read_only = "  "
+format = " [$path]($style)[$read_only]($read_only_style) "
+use_os_path_sep = true
+
+[directory.substitutions]
+"Documents" = " "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+# Keep in mind that the order matters. For example:
+# "Important Documents" = "  "
+# will not be replaced, because "Documents" was already substituted before.
+# So either put "Important Documents" before "Documents" or use the substituted version:
+# "Important  " = "  "
+
+[git_branch]
+symbol = " "
+format = " [$symbol$branch]($style) "
+truncation_length = 15 
+truncation_symbol = "…/"
+style = "bright green"
+
+[git_status]
+format = '[\($all_status$ahead_behind\)]($style) '
+style = "bold dimmed green"
+# conflicted = "🏳"
+up_to_date = " "
+# untracked = " "
+ahead = "⇡${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+behind = "⇣${count}"
+# stashed = " "
+# modified = " "
+staged = '[++\($count\)](bold yellow)'
+renamed = "襁 "
+deleted = " "
+conflicted = " ⚔️ "
+modified = "  "
+stashed = "  "
+untracked = "  "
+
+[git_commit]
+commit_hash_length = 6
+tag_symbol = "⏢"
+tag_disabled = false
+only_detached = false
+format = "[▮](blue)[$hash](dimmed green)[$tag](green)"
+
+[memory_usage]
+disabled = false
+threshold = 75
+symbol = "🐏 "
+style = "bold dimmed green"
+format = "$symbol [$ram]($style)" 
+
+[c]
+disabled = true 
+[cmake]
+disabled = true
+[crystal]
+disabled = true
+[dart]
+disabled = true
+[deno]
+disabled = true 
+[dotnet]
+disabled = true
+[elixir]
+disabled = true
+[elm]
+disabled = true
+[erlang]
+disabled = true
+[gcloud]
+disabled = true
+[golang]
+disabled = true
+[haskell]
+disabled = true
+[hg_branch]
+disabled = true
+[helm]
+disabled = true
+[java]
+disabled = true
+[julia]
+disabled = true
+[kotlin]
+disabled = true
+[lua]
+disabled = true
+[nim]
+disabled = true
+[ocaml]
+disabled = true
+[php]
+disabled = true
+[purescript]
+disabled = true
+[swift]
+disabled = true
+[zig]
+disabled = true
