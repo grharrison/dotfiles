@@ -1,0 +1,27 @@
+
+# ALIAS COMMANDS
+#
+if $(command -v exa); then
+	alias ls="exa --icons --group-directories-first"
+	alias ll="exa --icons --group-directories-first -l"
+else
+	alias ls="ls --color"
+	alias ll="ls -lah --color"
+fi
+	
+alias g="goto"
+alias grep='grep --color'
+
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+bindkey -e
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/graham/.zshrc'
+
+autoload -Uz compinit
+compinit
+
+eval "$(starship init zsh)"
