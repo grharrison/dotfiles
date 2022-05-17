@@ -1,27 +1,31 @@
 
-# ALIAS COMMANDS
-#
-if $(command -v exa); then
-	alias ls="exa --icons --group-directories-first"
-	alias ll="exa --icons --group-directories-first -l"
-else
-	alias ls="ls --color"
-	alias ll="ls -lah --color"
-fi
-	
-alias g="goto"
-alias grep='grep --color'
+setopt extended_history # save each command's beginning timestamp and the duration to the history file
+setopt hist_expire_dups_first # when trimming history, lose oldest duplicates first
+setopt notify  # report the status of backgrounds jobs immediately
+setopt nohup  # don't send SIGHUP to background processes when the shell exits.
 
-# Lines configured by zsh-newuser-install
+##Coloring man pages
+if [ -f ~/.config/.col_man ]; then
+        source ~/.config/.col_man
+fi
+
+#Aliases
+if [ -f ~/.config/.aliases ]; then
+     source ~/.config/.aliases
+fi
+
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
-bindkey -e
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
+bindkey -v
+
 zstyle :compinstall filename '/home/graham/.zshrc'
 
 autoload -Uz compinit
 compinit
 
+eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"

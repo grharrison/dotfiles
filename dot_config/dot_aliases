@@ -1,0 +1,71 @@
+alias cls="clear"
+alias grep="rg --color=auto"
+alias fgrep="rg --color=auto"
+alias egrep="rg --color=auto"
+
+if $(command -v exa &> /dev/null); then
+        alias ls="exa -G --icons --group-directories-first --color=auto"
+        alias ll="exa --icons --group-directories-first --color=always -la@ --git "
+	alias tree="exa --icons --tree --color=auto "
+else
+        alias ls="ls --color"
+        alias ll="ls -lah --color"
+fi
+
+if $(command -v bat &> /dev/null ); then
+	alias batcat="cat"
+	alias cat="bat "
+	alias pcat="bat -p"
+fi
+
+alias lt="ls --human-readable --size -1 -S --classify"
+
+alias mnt="mount | column -t"
+alias h="history"
+alias j="jobs -l"
+alias ping="ping -c 5"
+alias ports="netstat -tulanp"
+alias wget="wget -c"
+
+alias btop="bashtop"
+alias top="htop"
+
+alias du="dust -t"
+alias df="df -H"
+
+alias gh="history | grep"
+alias untar="tar -zxvf "
+alias myip="curl ipinfo.io/ip"
+
+alias weather="curl https://wttr.in; echo"
+
+alias vi="vim"
+
+alias update="sudo apt update"
+alias upgrade="sudo apt upgrade"
+alias full-upgrade="sudo apt full-upgrade"
+alias install="sudo apt install"
+alias snap-install="sudo snap install"
+alias uninstall="sudo apt remove"
+alias snap-uninstall="sudo snap remove"
+
+# get error messages from journalctl
+alias jctl="sudo journalctl -p 3 -xb"
+
+
+#git
+alias gs="git status"
+alias glog="git log --graph -decorate --oneline"
+alias gaddup="git add -u"
+alias gaddall="git add ."
+alias gbranch="git branch"
+alias gcheckout="git checkout"
+alias gclone="git clone"
+alias gcommit="git commit -m"
+alias gfetch="git fetch"
+alias gpull="git pull origin"
+alias gpush="git push origin"
+alias gtag="git tag"
+alias gnewtag="git tag -a"
+
+
