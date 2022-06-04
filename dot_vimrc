@@ -1,73 +1,224 @@
-set nocompatible " be VI iMproved, required
-filetype off " required
-
-syntax on
-set number
-set tabstop=2
-set shiftwidth=2 " 1 tab == 2 spaces
-set smarttab " Be smart about when tabs are tabs
-"set expandtab " convert tabs to spaces
-set autoindent
-"set cursorcolumn
-"set cursorline
-set smartindent
-set ruler
-set mouse=a
-set showmatch
-set smartcase
-"set noshowmode
-
-
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vimplug For Managing Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 call plug#begin()
 
-		Plug 'itchyny/lightline.vim'                       " Lightline statusbar
-    Plug 'suan/vim-instant-markdown', {'rtp': 'after'} " Markdown Preview
-    Plug 'frazrepo/vim-rainbow'
-    Plug 'junegunn/vim-easy-align'
+    " you can just used "Plug 'user/repo' as https://github.com is assumed,
+    " but including it allows for ctl-click from within the terminal to open
+    " up a broswer to the repo - so it's worth spelling it out!
+    Plug 'https://github.com/tpope/vim-sensible'                          " Sensible defaults as a starter
+		Plug 'https://github.com/itchyny/lightline.vim'                       " Lightline statusbar
+    Plug 'https://github.com/sainnhe/artify.vim'
+    Plug 'https://github.com/tpope/vim-fugitive'                          " Git intergration
+    Plug 'https://github.com/tpope/vim-rhubarb'                           " Additional github intergations for vim-fugitive
+    Plug 'https://github.com/airblade/vim-gitgutter'
+    Plug 'https://github.com/tpope/vim-eunuch'                            " Useful features like 'Sudowrite'
+    Plug 'https://github.com/godlygeek/tabular'
+    Plug 'https://github.com/frazrepo/vim-rainbow'                        " Rainbow Parentheses Improved
+    Plug 'https://github.com/jiangmiao/auto-pairs'                        " Auto complete pairs
+    Plug 'https://github.com/junegunn/vim-easy-align'                     " Easy alignment (must learn...)
+    Plug 'https://github.com/farmergreg/vim-lastplace'                    " Reopen files to the place you left them
+    Plug 'https://github.com/junegunn/goyo.vim'                           " Distraction-free viewing
+    Plug 'https://github.com/RRethy/vim-illuminate'                       " Highlight other uses of the current word
+    Plug 'https://github.com/tc50cal/vim-terminal'                        " Vim Terminal
+    Plug 'https://github.com/mhinz/vim-startify'                          " Fancy startup screen  :h startify and :h startify-faq for more info
+    Plug 'https://github.com/wellle/visual-split.vim'
+    Plug 'https://github.com/junegunn/fzf.vim'                            " Fuzzy Finder (also needed by dashboard)
+    Plug 'https://github.com/machakann/vim-highlightedyank'
+    Plug 'https://github.com/tpope/vim-surround'                          " Change surrounding marks  ysw)
+    Plug 'https://github.com/vifm/vifm.vim'                               " VI File Manager
+    Plug 'https://github.com/scrooloose/nerdtree'                         " Nerdtree file manager
+    Plug 'https://github.com/tiagofumo/vim-nerdtree-syntax-highlight'     " Highlighting Nerdtree
+    Plug 'https://github.com/ryanoasis/vim-devicons'                      " Icons for Nerdtree
+    Plug 'https://github.com/kyazdani42/nvim-web-devicons'                " More Icons
+    Plug 'https://github.com/junegunn/vim-emoji'                          " Vim needs emojis!
 
-    Plug 'scrooloose/nerdtree'                         " Nerdtree
-    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'     " Highlighting Nerdtree
-    Plug 'ryanoasis/vim-devicons'                      " Icons for Nerdtree
-		Plug 'sheerun/vim-polyglot'												 "     
+    Plug 'https://github.com/scrooloose/nerdcommenter'
+    Plug 'https://github.com/tpope/vim-commentary'                        " comment in/out a line or block with gc 
+    Plug 'https://github.com/terryma/vim-multiple-cursors'                " CTRL + N for multiple cursors
 
-"		Plug 'PotatoesMaster/i3-vim-syntax'                " i3 config highlighting
-"    Plug 'kovetskiy/sxhkd-vim'                         " sxhkd highlighting
-"    Plug 'vim-python/python-syntax'                    " Python highlighting
-    Plug 'ap/vim-css-color'                            " Color previews for CSS
-    Plug 'junegunn/goyo.vim'                           " Distraction-free viewing
-"    Plug 'junegunn/limelight.vim'                      " Hyperfocus on a range
-    Plug 'junegunn/vim-emoji'                          " Vim needs emojis!
-    Plug 'tpope/vim-surround'                          " Change surrounding marks
-    Plug 'fabi1cazenave/termopen.vim'
-    Plug 'lambdalisue/suda.vim'
-    Plug 'vim-scripts/headers.vim'
-	  Plug 'joshdick/onedark.vim'													" One Dark Colour scheme
+		Plug 'https://github.com/sheerun/vim-polyglot'											  " A collection of language packs for Vim.    
+      Plug 'https://github.com/pearofducks/ansible-vim'                     " Ansible Pack
+      Plug 'https://github.com/sudar/vim-arduino-syntax'                    " Arduino functions Pack
+      Plug 'https://github.com/hnamikaw/vim-autohotkey'                     " Autohot key
+      Plug 'https://github.com/vim-jp/vim-cpp'                              " cpp
+      Plug 'https://github.com/pboettch/vim-cmake-syntax'                   " Cmake
+      Plug 'https://github.com/ekalinin/Dockerfile.vim'                     " Dockerfile
+      Plug 'https://github.com/tpope/vim-git'                               " git files
+      Plug 'https://github.com/vim-scripts/gnuplot-syntax-highlighting'     " gnu plot
+      Plug 'https://github.com/fatih/vim-go', { 'do': ':GoUpdateBinaries' } " Go 
+      Plug 'https://github.com/towolf/vim-helm'                             " Helm files
+      Plug 'https://github.com/elzr/vim-json'                               " json
+      Plug 'https://github.com/chr4/nginx.vim'                              " nginx config files
+      Plug 'https://github.com/StanAngeloff/php.vim'                        " php
+      Plug 'https://github.com/pprovost/vim-ps1'                            " PowerShell
+      Plug 'https://github.com/tpope/vim-dispatch'                          " Required for Python pack
+      if has('nvim')
+        " Adds neovim support to vim-dispatch
+        Plug 'radenling/vim-dispatch-neovim'
+      endif      
+      Plug 'https://github.com/aliev/vim-compiler-python'                   " Python
+      Plug 'https://github.com/vim-python/python-syntax'
+      Plug 'https://github.com/2072/PHP-Indenting-for-VIm'                  " Offical PHP indent for VIm
+      Plug 'https://github.com/rust-lang/rust.vim'                          " Rust
+      Plug 'https://github.com/preservim/vim-markdown'                      " Markdown
+      Plug 'https://github.com/wgwoods/vim-systemd-syntax'
+      Plug 'https://github.com/hashivim/vim-terraform'            
 
 
+"    Plug 'https://github.com/scrooloose/syntastic'                        " Syntastic Syntax checking 
+    Plug 'https://github.com/suan/vim-instant-markdown', {'rtp': 'after'} " Markdown Preview
+    Plug 'https://github.com/ap/vim-css-color'                            " Color previews for CSS
+    Plug 'https://github.com/junegunn/limelight.vim'                      " Hyperfocus on a range
+    Plug 'https://github.com/fabi1cazenave/termopen.vim'
+    Plug 'https://github.com/lambdalisue/suda.vim'
+    Plug 'https://github.com/vim-scripts/headers.vim'
 
+"   Colour Schemes
+    Plug 'https://github.com/flazz/vim-colorschemes'
+    Plug 'https://github.com/rafi/awesome-vim-colorschemes'             " Multipul Colour Schemes
+    Plug 'https://github.com/dracula/vim', { 'as': 'dracula' }          " Offical Dracula theme
 call plug#end()
 
-set background=dark
-colorscheme onedark
+set nocompatible " be VI iMproved, required
+filetype off " required
+filetype plugin indent on  " required.  To ignoew plugin indent changes use: filetype plugin on
+syntax enable
+
+if has('mouse')
+  set mouse=a
+  if !has('nvim')
+    set ttymouse=xterm2
+  endif
+endif
+
+if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+set termguicolors
+
+" set background=dark
+" colorscheme devbox-dark-256
+colorscheme dracula
+set noshowmode  " don't show the mode on the bottom as lightline will show it
+
+set autoindent
+set expandtab " convert tabs to spaces
+set laststatus=2
+set number
+set ruler
+set shiftwidth=2 " 1 tab == 2 spaces
+set showmatch
+set smartcase
+set smartindent
+set smarttab " Be smart about when tabs are tabs
+set tabstop=2
+"set cursorcolumn
+"set cursorline
+
+function NoBackground()
+  hi Normal guibg=NONE ctermbg=NONE
+endfunction
+call NoBackground()
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "   Status Line
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " The lightline.vim theme
-let g:lightline = {
-      \ 'colorscheme': 'onedark',
+let g:lightline = {}
+let g:lightline.separator = { 'left': " ", 'right': " " }
+let g:lightline.subseparator = { 'left': " ", 'right': " " }
+let g:lightline.tabline_separator = { 'left': " ", 'right': " " }
+let g:lightline.tabline_subseparator = { 'left': " ", 'right': " " }
+let g:lightline.colorscheme = 'dracula'
+let g:lightline.active = {
+        \ 'left': [ [ 'mode', 'paste' ],
+        \           [ 'readonly', 'gitbranch', 'filename', 'modified', 'devicons_filetype' ] ],
+        \ 'right': [ [ 'lineinfo'  ],
+        \            [ 'fileformat', 'filetype', 'charvaluehex' ] ]
+        \ }
+let g:lightline.tabline = {
+        \ 'left': [ [ 'vim_logo', 'tabs' ] ],
+        \ 'right': [ ]
+        \ }
+let g:lightline.tab = {
+        \ 'active': [ 'activetabnum', 'filename', 'modified' ],
+        \ 'inactive': [ 'inactivetabnum', 'filename', 'modified' ] }
+let g:lightline.tab_component_function = {
+      \ 'tabnum': 'custom#lightline#tabnum',
+      \ 'filename': 'lightline#tab#filename',
+      \ 'modified': 'lightline#tab#modified',
+      \ 'readonly': 'lightline#tab#readonly'
+      \ }
+let g:lightline.component = {
+      \ 'charvaluehex': '0x%B',
+      \ 'vim_logo': "\ue7c5",
+      \ 'mode': '%{lightline#mode()}',
+      \ 'fileformat': '%{&fenc!=#""?&fenc:&enc}[%{&ff}]',
+      \ 'modified': '%M',
+      \ 'paste': '%{&paste?"PASTE":""}',
+      \ 'readonly': '%R',
+      \ 'lineinfo': '%2p%%  %3l:%-2v'
+      \ }
+let g:lightline.component_function = {
+      \ 'devicons_filetype': 'custom#lightline#devicons',
+      \ 'gitbranch': 'FugitiveHead'
       \ }
 
-set guifont=SauceCodePro\ Nerd\ Font:h11
+" fzf 
+let g:fzf_preview_window = 'right:50%'
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6   }   }
+
+set guifont=SauceCodePro\ Nerd\ Font:h12
+
+if has("macunix") || has('win32')
+  set clipboard=unnamed
+elseif has("unix")
+  set clipboard=unnamedplus
+endif
 
 
-"~~~~~~~~~~~~~~~~~~~
-"  Nerdtree   ~
-"~~~~~~~~~~~~~~~~~~~
+" Goyo
+function! s:goyo_enter()
+  set noshowmode
+  set noshowcmd
+  set cursorline
+endfunction
+
+function! s:goyo_leave()
+  set showmode
+  set showcmd
+  set nocursorline
+endfunction
+
+" WebDevIcons
+let g:webdevicons_enable = 1
+let g:webdevicons_enable_nerdtree = 1
+let g:webdevicons_conceal_nerdtree_brackets = 1
+
+
+" Python Syntax
+let g:python_highlight_all = 1
+
+" Markdown
+let g:vim_markdown_folding_disabled = 1
+
+" Syntastic
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+
+
+"  Nerdtree   
 map <F3> :NERDTreeToggle<CR>
 map <F4> :Hex<CR>
 
@@ -102,9 +253,7 @@ function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
 endfunction
 
 
-"~~~~~~~~~~~~~~~~~~~~~~~~
 "  Nerdcommenter   ~
-"~~~~~~~~~~~~~~~~~~~~~~~~
 let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
 let g:NERDCompactSexyComs = 1 " Use compact syntax for prettified multi-line comments
 let g:NERDDefaultAlign = 'left' " Align line-wise comment delimiters flush left instead of following code indentation
@@ -113,25 +262,15 @@ let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } } " Add your
 let g:NERDCommentEmptyLines = 1 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDTrimTrailingWhitespace = 1 " Enable trimming of trailing whitespace when uncommenting
 
+" Raindow Parentheses
+let g:rainbow_active = 1
 
+" Easy Align
+"   Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+"   Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
-
-"Credit joshdick
-"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-if (empty($TMUX))
-  if (has("nvim"))
-  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-  if (has("termguicolors"))
-    set termguicolors
-  endif
-endif
 
 
 

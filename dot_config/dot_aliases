@@ -4,13 +4,20 @@ alias fgrep="rg --color=auto"
 alias egrep="rg --color=auto"
 
 if $(command -v exa &> /dev/null); then
-        alias ls="exa -G --icons --group-directories-first --color=auto"
-        alias ll="exa --icons --group-directories-first --color=always -la@ --git "
-	alias tree="exa --icons --tree --color=auto "
+        alias ls="exa -G --icons --group-directories-first --color=auto --links"
+        alias ll="exa --icons --group-directories-first --color=always -lab@ --git --icons --group --changed --time-style iso "
+	      alias etree="exa --icons --tree --color=auto level=2 --links --git -group --changed"
 else
         alias ls="ls --color"
         alias ll="ls -lah --color"
 fi
+
+alias lt="ls --human-readable --size -1 -S --classify"
+alias lD='ls -D'                        # Short, only directories
+alias lC='ll --sort=changed'            # Long, sort changed
+alias lM='ll --sort=modified'           # Long, sort modified
+alias lS='ll --sort=size'               # Long, sort size
+alias lX='ll --sort=extension'          # Long, sort extension
 
 if $(command -v bat &> /dev/null ); then
 	alias batcat="cat"
@@ -20,7 +27,93 @@ fi
 
 alias lt="ls --human-readable --size -1 -S --classify"
 
-alias mnt="mount | column -t"
+alias h="history"
+alias j="jobs -l"
+alias ping="ping -c 5"
+alias ports="netstat -tulanp"
+alias wget="wget -c"
+
+alias btop="bashtop"
+alias top="htop"
+
+alias du="dust"
+alias dut="dust -t"
+alias df="df -H"
+
+alias gh="history | grep"
+alias untar="tar -zxvf "
+alias myip="curl ipinfo.io/ip"
+
+alias weather="curl https://wttr.in; echo"
+
+alias vi="vim"
+
+# Package
+alias update="sudo apt update"
+alias upgrade="sudo apt upgrade"
+alias full-upgrade="sudo apt full-upgrade"
+alias install="sudo apt install"
+alias snap-install="sudo snap install"
+alias uninstall="sudo apt remove"
+alias snap-uninstall="sudo snap remove"
+
+# get error messages from journalctl
+alias jctl="sudo journalctl -p 3 -xb"
+
+#git
+alias gs="git status"
+alias glog="git log --graph -decorate --oneline"
+alias gaddup="git add -u"
+alias gaddall="git add ."
+alias gbranch="git branch"
+alias gcheckout="git checkout"
+alias gclone="git clone"
+alias gcommit="git commit -m"
+alias gfetch="git fetch"
+alias gpull="git pull origin"
+alias gpush="git push origin"
+alias gtag="git tag"
+alias gnewtag="git tag -a"
+
+#Ansible
+alias a='ansible'
+alias ap='ansible-playbook'
+alias al='ansible-pull'
+alias avc='ansible-vault create'
+alias ave='ansible-vault edit'
+alias avr='ansible-vault rekey'
+alias avenc='ansible-vault encrypt'
+alias avdec='ansible-vault decrypt'
+alias avv='ansible-vault view'
+alias aga='ansible-galaxy'
+alias agad='ansible-galaxy delete'
+alias agai='ansible-galaxy install'
+alias agaim='ansible-galaxy import'
+alias againf='ansible-galaxy info'
+alias agal='ansible-galaxy list'
+alias agalog='ansible-galaxy login'
+alias agar='ansible-galaxy remove'
+alias agas='ansible-galaxy search'
+
+#Cargo
+alias co=cargo
+alias cr='cargo run'
+alias ccl='cargo clean'
+alias ccy='cargo clippy'
+alias cb='cargo build --release'
+alias ct='cargo test'
+alias cad='cargo add'
+alias ci='cargo install'
+alias ciu='cargo install-update -a'
+alias cfi='cargo fix'
+alias cfm='cargo fmt'
+alias cfe='cargo fetch'
+alias cpa='cargo package'
+alias cpl='cargo publish'
+alias cs='cargo search'
+alias cfa='cargo fmt; cargo fix --allow-dirty --allow-staged'
+
+
 alias h="history"
 alias j="jobs -l"
 alias ping="ping -c 5"
@@ -52,7 +145,6 @@ alias snap-uninstall="sudo snap remove"
 # get error messages from journalctl
 alias jctl="sudo journalctl -p 3 -xb"
 
-
 #git
 alias gs="git status"
 alias glog="git log --graph -decorate --oneline"
@@ -68,4 +160,67 @@ alias gpush="git push origin"
 alias gtag="git tag"
 alias gnewtag="git tag -a"
 
+#Ansible
+alias a='ansible'
+alias ap='ansible-playbook'
+alias al='ansible-pull'
+alias avc='ansible-vault create'
+alias ave='ansible-vault edit'
+alias avr='ansible-vault rekey'
+alias avenc='ansible-vault encrypt'
+alias avdec='ansible-vault decrypt'
+alias avv='ansible-vault view'
+alias aga='ansible-galaxy'
+alias agad='ansible-galaxy delete'
+alias agai='ansible-galaxy install'
+alias agaim='ansible-galaxy import'
+alias againf='ansible-galaxy info'
+alias agal='ansible-galaxy list'
+alias agalog='ansible-galaxy login'
+alias agar='ansible-galaxy remove'
+alias agas='ansible-galaxy search'
 
+#Docker
+alias di='docker images'
+alias drmi='docker rmi'
+alias dbu='docker build'
+alias drmi_all='docker rmi $* $(docker images -a -q)'
+alias drmi_dang='docker rmi $* $(docker images -q -f "dangling=true")'
+alias dhi='docker history $*'
+
+dhi_neat() {
+  ### dhi_neat <image name> [extra `docker history` options]
+  docker history "${1}" \
+    --format "{{ .Size }}\t{{ .CreatedBy }}" \
+    ${2:-} |
+    sort \
+      --key=1 \
+      --human-numeric-sort \
+      --reverse
+}
+
+# Containers #
+alias dps='docker ps'
+alias drit='docker run -it'
+alias deit='docker exec -it'
+alias dlog='docker logs'
+alias dip='docker inspect --format "{{ .NetworkSettings.IPAddress }}" $*'
+alias dstop_all='docker stop $* $(docker ps -q -f "status=running")'
+alias drm='docker rm'
+alias drm_stopped='docker rm $* $(docker ps -q -f "status=exited")'
+alias drmv_stopped='docker rm -v $* $(docker ps -q -f "status=exited")'
+alias drm_all='docker rm $* $(docker ps -a -q)'
+alias drmv_all='docker rm -v $* $(docker ps -a -q)'
+
+# Volumes #
+alias dvls='docker volume ls $*'
+alias dvrm_all='docker volume rm $(docker volume ls -q)'
+alias dvrm_dang='docker volume rm $(docker volume ls -q -f "dangling=true")'
+
+# tmux
+alias ta='tmux attach -t'
+alias tad='tmux attach -d -t'
+alias ts='tmux new-session -s'
+alias tl='tmux list-sessions'
+alias tksv='tmux kill-server'
+alias tkss='tmux kill-session -t'

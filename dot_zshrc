@@ -4,10 +4,18 @@ setopt hist_expire_dups_first # when trimming history, lose oldest duplicates fi
 setopt notify  # report the status of backgrounds jobs immediately
 setopt nohup  # don't send SIGHUP to background processes when the shell exits.
 
+export EDITOR=vim
+
 ##Coloring man pages
 if [ -f ~/.config/.col_man ]; then
         source ~/.config/.col_man
 fi
+
+if [[ -z "$TMUX"  ]]; then
+	  export TERM=xterm-256color
+fi
+
+
 
 #Aliases
 if [ -f ~/.config/.aliases ]; then
@@ -19,13 +27,49 @@ HISTSIZE=1000
 SAVEHIST=1000
 bindkey -v
 
+[[ -e /etc/zsh_command_not_found ]] && source /etc/zsh_command_not_found
+
+
 zstyle :compinstall filename '/home/graham/.zshrc'
 
-autoload -Uz compinit
-compinit
+## For autocomplete follow lines commented out 
+## also required "skip_global_compinit=1" in .zshenv for ubuntu
+#autoload -Uz compinit
+#compinit
+
+## dracula theme
+# https://github.com/dracula/zsh-syntax-highlighting
+source ~/.zsh/dracula/zsh-syntax-highlighting.sh
+
+## https://github.com/marlonrichert/zsh-autocomplete
+source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+## https://github.com/zsh-users/zsh-autosuggestions
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+## https://github.com/zsh-users/zsh-syntax-highlighting
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+## https://github.com/marlonrichert/zsh-edit
+source ~/.zsh/zsh-edit/zsh-edit.plugin.zsh
+
+# Alt-Shift-S: Prefix the current or previous command line with `sudo`.
+() {
+  bindkey '^[S' $1  # Bind Alt-Shift-S to the widget below.
+  zle -N $1         # Create a widget that calls the function below.
+  $1() {            # Create the function.
+    [[ -z $BUFFER ]] && zle .up-history
+    LBUFFER="sudo $LBUFFER"   # Use $LBUFFER to preserve cursor position.
+  }
+} .sudo
+
+
+## https://github.com/djui/alias-tips
+source ~/.zsh/alias-tips/alias-tips.plugin.zsh
+export ZSH_PLUGINS_ALIAS_TIPS_TEXT="💡 Alias tip: "
 
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+
+# Put a coloured bar up
+~/bin/bar
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
