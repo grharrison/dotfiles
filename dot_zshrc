@@ -1,34 +1,121 @@
-
 setopt extended_history # save each command's beginning timestamp and the duration to the history file
 setopt hist_expire_dups_first # when trimming history, lose oldest duplicates first
+setopt hist_ignore_all_dups 
+setopt hist_ignore_space
+setopt HIST_FIND_NO_DUPS
 setopt notify  # report the status of backgrounds jobs immediately
 setopt nohup  # don't send SIGHUP to background processes when the shell exits.
+setopt AUTO_CD # auto cd enable
+#share history across multiple zsh sessions
+setopt SHARE_HISTORY
+# append to history
+setopt APPEND_HISTORY
+
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history  # if ZDOTFILES is set us that directory else use $HOME
+HISTSIZE=5000
+SAVEHIST=10000
+bindkey -v
 
 export EDITOR=vim
+export VISUAL=vim
+export CLICOLOR=1
+export BROWSER=brave
+export PAGER='less --color=xcolor'
+
+# Interop Error that randomly occurs in vscode terminal when using WSL2
+fix_wsl2_interop() {
+  for i in $(pstree -np -s $$ | grep -o -E '[0-9]+'); do
+    if [[ -e "/run/WSL/${i}_interop"  ]]; then
+      export WSL_INTEROP=/run/WSL/${i}_interop
+    fi
+  done                                         
+}
+
+# Colormap
+function colormap() {
+   for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
+}
+
+### ARCHIVE EXTRACTION
+## usage: ex <file>
+function ex ()
+{
+    if [ -f "$1"  ] ; then
+      case $1 in
+        *.tar.bz2)   tar xjf $1   ;;
+        *.tar.gz)    tar xzf $1   ;;
+        *.bz2)       bunzip2 $1   ;;
+        *.rar)       unrar x $1   ;;
+        *.gz)        gunzip $1    ;;
+        *.tar)       tar xf $1    ;;
+        *.tbz2)      tar xjf $1   ;;
+        *.tgz)       tar xzf $1   ;;
+        *.zip)       unzip $1     ;;
+        *.Z)         uncompress $1;;
+        *.7z)        7z x $1      ;;
+        *.deb)       ar x $1      ;;
+        *.tar.xz)    tar xf $1    ;;
+        *.tar.zst)   unzstd $1    ;;
+        *)           echo "'$1' cannot be extracted via ex()" ;;
+      esac
+    else
+      echo "'$1' is not a valid file"
+    fi                                                                                                                  
+}
+
+
+### "bat" as manpager
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+
+# find out which distribution we are running on
+LFILE="/etc/os-release"
+if [ -f $LFILE  ]; then
+    _distro=$(awk '/^ID=/' /etc/os-release | awk -F'=' '{ print tolower($2)  }')
+else
+    _distro="win"
+fi
+# set an icon based on the distro
+# # make sure your font is compatible with https://github.com/lukas-w/font-logos
+case $_distro in
+    *kali*)                  ICON="ﴣ";;
+    *arch*)                  ICON="";;
+    *debian*)                ICON="";;
+    *raspbian*)              ICON="";;
+    *ubuntu*)                ICON="";;
+    *elementary*)            ICON="";;
+    *fedora*)                ICON="";;
+    *coreos*)                ICON="";;
+    *gentoo*)                ICON="";;
+    *mageia*)                ICON="";;
+    *centos*)                ICON="";;
+    *opensuse*|*tumbleweed*) ICON="";;
+    *sabayon*)               ICON="";;
+    *slackware*)             ICON="";;
+    *linuxmint*)             ICON="";;
+    *alpine*)                ICON="";;
+    *aosc*)                  ICON="";;
+    *nixos*)                 ICON="";;
+    *devuan*)                ICON="";;
+    *manjaro*)               ICON="";;
+    *rhel*)                  ICON="";;
+    *macos*)                 ICON="";;
+    *win*)                   ICON="";;
+    *)                       ICON="";;
+esac
+export STARSHIP_DISTRO="$ICON"
 
 ##Coloring man pages
 if [ -f ~/.config/.col_man ]; then
         source ~/.config/.col_man
 fi
 
-if [[ -z "$TMUX"  ]]; then
-	  export TERM=xterm-256color
-fi
-
-
-
 #Aliases
 if [ -f ~/.config/.aliases ]; then
      source ~/.config/.aliases
 fi
 
-HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
-bindkey -v
-
 [[ -e /etc/zsh_command_not_found ]] && source /etc/zsh_command_not_found
-
 
 zstyle :compinstall filename '/home/graham/.zshrc'
 
@@ -37,15 +124,28 @@ zstyle :compinstall filename '/home/graham/.zshrc'
 #autoload -Uz compinit
 #compinit
 
-## dracula theme
+## dracula theme - https://draculatheme.com/
+# zsh and prompt (which starship should take over, but just in case...)
+# https://github.com/dracula/zsh
+# source ~/.themes/dracula/zsh/dracula.zsh-theme
 # https://github.com/dracula/zsh-syntax-highlighting
-source ~/.zsh/dracula/zsh-syntax-highlighting.sh
+# tty https://github.com/dracula/tty.git
+source ~/.themes/dracula/tty/dracula-tty.sh
+# midnight commander (not needed here but this is to remind it needs doing.)
+# https://draculatheme.com/midnight-commander
+# bashtop (again here as a reminder)
+# https://github.com/dracula/bashtop
+# FZF
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
+#
+# another reminder, this time dircolors https://draculatheme.com/dircolors
 
 ## https://github.com/marlonrichert/zsh-autocomplete
-source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+#source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 ## https://github.com/zsh-users/zsh-autosuggestions
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 ## https://github.com/zsh-users/zsh-syntax-highlighting
+source ~/.themes/dracula/zsh-syntax/zsh-syntax-highlighting.sh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ## https://github.com/marlonrichert/zsh-edit
 source ~/.zsh/zsh-edit/zsh-edit.plugin.zsh
@@ -64,6 +164,17 @@ source ~/.zsh/zsh-edit/zsh-edit.plugin.zsh
 ## https://github.com/djui/alias-tips
 source ~/.zsh/alias-tips/alias-tips.plugin.zsh
 export ZSH_PLUGINS_ALIAS_TIPS_TEXT="💡 Alias tip: "
+
+# tmux nvim/vim intergations.  
+source ~/.zsh/tmux-vim/tmux-vim-integration.plugin.zsh
+
+#tsm https://github.com/RobertAudi/tsm
+source ~/.zsh/tsm/tsm.plugin.zsh
+
+# https://github.com/marlonrichert/zcolors
+# Whenever you change your $LS_COLORS, do $ zcolors >| ~/.zcolors
+source ~/.zsh/zcolors/zcolors.plugin.zsh
+source ~/.zcolors  # generated in step 1
 
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"

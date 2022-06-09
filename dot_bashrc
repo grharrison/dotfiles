@@ -9,7 +9,7 @@
 # don't overwrite GNU Midnight Commander's setting of `ignorespace'.
 HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
 # ... or force ignoredups and ignorespace
-HISTCONTROL=ignoreboth
+export HISTCONTROL=ignoredups:erasedups
 
 shopt -s histappend # append to the history file, don't overwrite it
 shopt -s checkwinsize # checks term size when shell regains control
@@ -17,6 +17,16 @@ shopt -s autocd # changed to named directory
 shopt -s cmdhist # save multi-line commands in history as single line
 shopt -s expand_aliases # expand aliases
 shopt -s cdspell # auto corrects cd misspellings
+
+export EDITOR=vim
+export VISUAL=vim
+export CLICOLOR=1
+export BROWSER=brave
+
+source ~/.themes/dracula/tty/dracula-tty.sh
+
+### "bat" as manpager
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -29,7 +39,7 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm*|rxvt*|PuTTY*) 
+    xterm*|rxvt*|PuTTY*|rxvt*|Eterm*|aterm|kterm|gnome*|alacritty|st*|konsole*|tmux*) 
     PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
     color_prompt=yes
     ;;
@@ -58,7 +68,7 @@ if [ "$color_prompt" = yes ]; then
 	if [ "`id -u`" -eq 0 ]; then
 	
 PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[00m\]@\[\033[00;33m\]\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\] \[\033[01;31m\]#\[\033[00m\] '
-	
+
 	else
 			PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]@\[\033[00;33m\]\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\] \[\033[00;32m\]$\[\033[00m\] '
 	
@@ -78,7 +88,7 @@ unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
-xterm*|rxvt*)
+    xterm*|rxvt*|PuTTY*|rxvt*|Eterm*|aterm|kterm|gnome*|alacritty|st*|konsole*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
 *)
@@ -93,6 +103,11 @@ esac
 if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
+
+## Dracula Theme - draculatheme.com
+# FZF
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
+
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -111,6 +126,38 @@ fi
 # Add rust userlevel bin directory to path
 . "$HOME/.cargo/env"
 #
+#
+#
+
+### ARCHIVE EXTRACTION
+## usage: ex <file>
+ex ()
+{
+    if [ -f "$1"  ] ; then
+        case $1 in
+            *.tar.bz2)   tar xjf $1   ;;
+            *.tar.gz)    tar xzf $1   ;;
+            *.bz2)       bunzip2 $1   ;;
+            *.rar)       unrar x $1   ;;
+            *.gz)        gunzip $1    ;;
+            *.tar)       tar xf $1    ;;
+            *.tbz2)      tar xjf $1   ;;
+            *.tgz)       tar xzf $1   ;;
+            *.zip)       unzip $1     ;;
+            *.Z)         uncompress $1;;
+            *.7z)        7z x $1      ;;
+            *.deb)       ar x $1      ;;
+            *.tar.xz)    tar xf $1    ;;
+            *.tar.zst)   unzstd $1    ;;
+            *)           echo "'$1' cannot be extracted via ex()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+
+
 eval "$(zoxide init bash)"
 eval "$(starship init bash)"
 

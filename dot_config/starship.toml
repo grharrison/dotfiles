@@ -3,8 +3,8 @@
 # Inserts a blank line between shell prompts
 add_newline = true
 
-# Change command timeout from 500 to 1200 ms
-command_timeout = 1200
+# Change command timeout from 500 to 1000 ms
+command_timeout = 1000
 
 # Change the default prompt format
 #format = """\
@@ -12,15 +12,16 @@ command_timeout = 1200
 #$all[╰─](238)$character"""
 
 format = """\
-$sudo\
-$username\
+$env_var\
 $hostname\
+$username\
 $directory\
 $git_branch\
 $git_status\
 $git_commit\
 $line_break\
-$character\
+$sudo\
+[ ](bg:44475a fg:#8be9fd)\
 $shell
 """
 
@@ -34,67 +35,70 @@ continuation_prompt = ">> "
 success_symbol = "[✓](green)"
 error_symbol = "[✗](bright red)"
 
-
-# Shows an icon that should be included by zshrc script based on the distribution or os
-[env_var.STARSHIP_DISTRO]
-format = '[$env_value]($style) '
-#variable = "STARSHIP_DISTRO"
-disabled = false
-style = "cyan bold"
-
-#Show the current shell
 [shell]
-bash_indicator = " "
-zsh_indicator = " "
-powershell_indicator = "_ "
-unknown_indicator = " "
-style  = "cyan bold"
+bash_indicator = " 💲 "
+zsh_indicator = " > "
+powershell_indicator = " >_ "
+unknown_indicator = " ❓ "
+style  = "fg:#ffb86c"
 #style = "bg:#575A6B fg:#61C2A2"
 disabled = false
 
 [sudo]
-style = "purple bold"
-symbol = "+"
+style = "bg:#bd92f9 fg:#35063e"
+symbol = " # "
 disabled = false
 allow_windows = false
-format = "[$symbol]($style)"
+format = "[](bg:#bd92f9 fg:#35063e)[$symbol]($style)[](fg:#bd92f9)"
+
+
 # Shows the username
 [username]
-style_user = "fg:#61C2A2"
-style_root = "red bold"
-format = "[$user]($style)"
+style_user = "bg:#8be9fd fg:#282a36"
+style_root = "bg:#8be9fd fg:#ff79c6"
+format = "[](bg:#8be9fd fg:#35063e)[ ]($style)[$user]($style)[ ]($style)[](fg:#8be9fd bg:#35063e)"
 disabled = false
 show_always = true
 
 #Show the hostname 
 [hostname]
 ssh_only = false
-format = "[@](248)[$hostname]($style) "
+format = "[](bg:#ff79c6 fg:#35063e)[ ]($style)[$hostname]($style)[ ]($style)[](fg:#ff79c6 bg:#35063e)"
 #trim_at = ".companyname.com"
 disabled = false
-style = "fg:#FEDD00"
+style = "bg:#ff79c6 fg:#282a36"
+
+# Shows an icon that should be included by zshrc script based on the distribution or os
+[env_var.STARSHIP_DISTRO]
+#format = '[ ]($style)[$env_value]($style)[ ]($style)'
+format = "[](bg:#bd92f9 fg:#35063e)[ ]($style)[$env_value]($style)[ ]($style)[](bg:#35063e fg:#bd92f9)"
+variable = "STARSHIP_DISTRO"
+disabled = false
+style = "bg:#bd92f9 fg:#35063e"
 
 [container]
-symbol = " "
-format = "[ ][$symbol \\[$name\\]]($style) "
-style = "blue"
+symbol = "  "
+format = "[$symbol \\[$name\\]]($style) "
+style = "bg:#bd93f9 fg:#f1fa8c"
 
 [directory]
-style = "(bg:#135DD8)"
+style = "bg:#ffb86c fg:#282a36"
+read_only_style = "bg:#ffb86c fg:#ff5555"
 truncation_length = 20
 truncate_to_repo = false
 truncation_symbol = "…/"
 home_symbol = " ~"
-read_only_style = "197"
+#read_only_style = "197"
 read_only = "  "
-format = " [$path]($style)[$read_only]($read_only_style) "
+format = "[](bg:#ffb86c fg:#35063e)[ ]($style)[$path]($style)[$read_only]($read_only_style)[ ]($style)[](bg:#35063e fg:#ffb86c)"
 use_os_path_sep = true
 
-[directory.substitutions]
-"Documents" = " "
-"Downloads" = " "
-"Music" = " "
-"Pictures" = " "
+#[directory.substitutions]
+#"Documents" = " "
+#"Downloads" = " "
+#"Music" = " "
+#"Pictures" = " "
+#".config" = "⚙ "
 # Keep in mind that the order matters. For example:
 # "Important Documents" = "  "
 # will not be replaced, because "Documents" was already substituted before.
@@ -103,28 +107,25 @@ use_os_path_sep = true
 
 [git_branch]
 symbol = " "
-format = " [$symbol$branch]($style) "
+format = "[](bg:#50fa7b fg:#35063e)[ ]($style)[$symbol$branch]($style)[ ]($style)[](bg:#35063e fg:#50fa7b)"
 truncation_length = 15 
 truncation_symbol = "…/"
-style = "bright green"
+style = "bg:#50fa7b fg:#282a36"
 
 [git_status]
-format = '[\($all_status$ahead_behind\)]($style) '
-style = "bold dimmed green"
-# conflicted = "🏳"
-up_to_date = " "
-# untracked = " "
-ahead = "⇡${count}"
-diverged = "⇕⇡${ahead_count}⇣${behind_count}"
-behind = "⇣${count}"
-# stashed = " "
-# modified = " "
-staged = '[++\($count\)](bold yellow)'
-renamed = "襁 "
-deleted = " "
+format = '[](bg:#50fa7b fg:#35063e)[ ]($style)[\($all_status$ahead_behind\)]($style)[ ](bg:#50fa7b)[](bg:#35063e fg:#50fa7b)'
+style = "bg:#50fa7b fg:#282a36"
+#conflicted = " 🏳"
+up_to_date = " ✔ "
+ahead = " ⇡${count}"
+diverged = " ⇕⇡${ahead_count}⇣${behind_count}"
+behind = " ⇣${count}"
+stashed = "  "
+staged = '[staged\($count\)](bg:#50fa7b fg:#f1fa8c)'
+renamed = " 襁 "
+deleted = "  "
 conflicted = " ⚔️ "
 modified = "  "
-stashed = "  "
 untracked = "  "
 
 [git_commit]
@@ -132,10 +133,11 @@ commit_hash_length = 6
 tag_symbol = "⏢"
 tag_disabled = false
 only_detached = false
-format = "[▮](blue)[$hash](dimmed green)[$tag](green)"
+format = "[](bg:#50fa7b fg:#35063e)[ ](bg:#50fa7b)[▮](bg:#50fa7b fg:#44475a)[$hash](bg:#50fa7b fg:#282a36)[$tag](bg:#50fa7b fg:#6272a4)[ ](bg:#50fa7b)[](fg:#50fa7b)"
+style = "fg:#282a36 bg:#50fa7b"
 
 [memory_usage]
-disabled = false
+disabled = true
 threshold = 75
 symbol = "🐏 "
 style = "bold dimmed green"
